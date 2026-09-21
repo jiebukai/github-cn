@@ -1,0 +1,15 @@
+{
+  "name": "github-cn",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "GitHub 界面汉化（简体中文）Tampermonkey 用户脚本",
+  "license": "MIT",
+  "author": "jiebukai",
+  "scripts": {
+    "build": "node build.mjs",
+    "check": "node build.mjs --check",
+    "lint:dict": "node tools/dict-lint.mjs",
+    "test": "node --test"
+  }
+}

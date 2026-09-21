@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "note": "带变量的文本模板。re 为字符串正则，out 中的 $1..$9 引用捕获组。按顺序匹配，首个命中即返回。",
+    "updated": "2026-09-21"
+  },
+  "patterns": [
+    { "re": "^([\\d,]+) commits? to (.+)$", "out": "$1 次提交到 $2" },
+    { "re": "^([\\d,]+) commits?$", "out": "$1 次提交" },
+    { "re": "^([\\d,]+) branches?$", "out": "$1 个分支" },
+    { "re": "^([\\d,]+) tags?$", "out": "$1 个标签" },
+    { "re": "^([\\d,]+) contributors?$", "out": "$1 位贡献者" },
+    { "re": "^([\\d,]+) releases?$", "out": "$1 个发行版" },
+    { "re": "^([\\d,]+) issues?$", "out": "$1 个议题" },
+    { "re": "^([\\d,]+) pull requests?$", "out": "$1 个拉取请求" },
+    { "re": "^([\\d,]+) files? changed$", "out": "$1 个文件变更" },
+    { "re": "^([\\d,]+) commit(?:s)?? this (?:week|month|year)$", "out": "$1 次提交（本周/本月/今年）" }
+  ]
+}

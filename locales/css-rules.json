@@ -1,0 +1,13 @@
+{
+  "meta": {
+    "note": "选择器规则：文本键无法覆盖的场景（同文本不同上下文需要不同译法，或需直接改写属性）。key 为 '!html' 时替换元素内容，否则改写该属性。",
+    "updated": "2026-09-21"
+  },
+  "css": [
+    {
+      "selector": "a[aria-label='Pull requests you created']",
+      "key": "!html",
+      "replacement": "你创建的拉取请求"
+    }
+  ]
+}

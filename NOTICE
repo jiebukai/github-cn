@@ -1,0 +1,32 @@
+# 来源与许可说明
+
+## 1. 词典来源
+
+`locales/zh-CN.json` 中的部分条目迁移自：
+
+- 项目：k1995/github-i18n-plugin（GitHub 中文社区）
+- 地址：https://github.com/k1995/github-i18n-plugin
+- 迁移内容：仅使用其 `locales/zh-CN.json` 中的「英文 → 中文」对照数据（词条），
+  **未复制**其 `userscript.js` 脚本代码。
+
+### 上游许可情况
+
+上游仓库**没有 LICENSE 文件**。其许可依据为仓库内 `userscript.js` 文件头部注释中的声明：
+
+```
+// @license MIT
+```
+
+上游 README 说明该插件由 GitHub 中文社区提供，欢迎补充完善词条。本项目据此将其词条数据
+视为 MIT 许可内容使用，并在此明确署名来源。如上游作者对迁移有异议，请开 issue，本项目会
+立即移除相关条目。
+
+## 2. 术语译名
+
+词条译名以 GitHub 官方词汇表的中文译本为准：
+
+- https://docs.github.com/zh/get-started/learning-about-github/github-glossary
+
+## 3. 本项目许可
+
+除上述迁移的词条数据外，本项目其余内容版权归 jiebukai，按 MIT 许可发布，见 `LICENSE`。

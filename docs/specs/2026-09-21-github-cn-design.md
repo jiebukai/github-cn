@@ -1,4 +1,4 @@
-# GitHub 汉化脚本（jiebukai/github-i18n）设计 spec
+# GitHub 汉化脚本（jiebukai/github-cn）设计 spec
 
 > 日期：2026-09-21
 > 状态：待用户审阅
@@ -41,7 +41,7 @@
 
 | 决策项 | 结论 |
 |---|---|
-| 仓库 | 新建独立仓库 `jiebukai/github-i18n`（与 `jiebukai/tampermonkey` 的 Eagle 主题分离） |
+| 仓库 | 新建独立仓库 `jiebukai/github-cn`（与 `jiebukai/tampermonkey` 的 Eagle 主题分离） |
 | 交付形态 | 词典源 JSON + `build.mjs` 内联生成 `.user.js`（产物提交进仓库，供 Tampermonkey 直装） |
 | 词典来源 | 迁移上游 1680 条（MIT 声明）+ 清洗修正 + 自建补充 |
 | 正文翻译 | 不自动译；注入「译」按钮按需调用；**Google 与 gitcn.org 两个服务都实现，设置面板可切换** |
@@ -83,8 +83,16 @@
 }
 ```
 
+**实现说明**：三个部分分放在三个文件里，`build.mjs` 构建时合并注入产物 —— 这样词典能单独 review，diff 也干净：
+
+| 文件 | 内容 | 合并规则 |
+|---|---|---|
+| `locales/zh-CN.json` | `meta` + `dict`（可选 `patterns`/`css` 作为追加） | `dict` 为主词典 |
+| `locales/patterns.json` | `patterns` | 排在 `zh-CN.json` 的 `patterns` 之前 |
+| `locales/css-rules.json` | `css` | 同上 |
+
 - `dict`：键 = **归一化后的英文小写**，值 = 中文。迁移上游时剔除 `__comments-1`、`__comments-css` 这类注释伪键（上游把它混在 `dict` 里，是漏配的噪音）。
-- `patterns`：正则模板，处理带变量的文本。存储为字符串，运行时 `new RegExp(re, flags)`，编译结果缓存。
+- `patterns`：正则模板，处理带变量的文本。存储为字符串，运行时 `new RegExp(re, flags)`，编译结果缓存（带 `g` 标志的会被去掉，避免 `lastIndex` 状态问题）。
 - `css`：选择器规则，兜住「文本键无法覆盖」的场景（同一英文文本在不同上下文需要不同译法、或需要直接改 `aria-label`）。上游只有 1 条，本项目按需扩充。
 
 > 说明：为降低复杂度，**不**实现上下文相关词典（同一 key 多译法）；确实需要的场景走 `css` 规则。
@@ -192,7 +200,7 @@ node.nodeValue = m[1] + translated + m[3];
 ### 10.1 仓库结构
 
 ```
-github-i18n/
+github-cn/
 ├─ README.md                 # 用途、安装链接、设置说明、来源与许可
 ├─ LICENSE                   # MIT（copyright jiebukai）
 ├─ NOTICE                    # 上游词典来源与许可声明情况说明
@@ -202,7 +210,8 @@ github-i18n/
 │  ├─ patterns.json          # 带变量文本模板
 │  └─ css-rules.json         # 选择器规则
 ├─ src/
-│  └─ userscript.template.js # 脚本模板，含 /*__DICT__*/ 等占位符
+│  ├─ engine.mjs            # 纯函数层（归一化/匹配/剪枝判定/相对时间；构建期内联）
+│  └─ userscript.template.js # 脚本模板，含 /*__ENGINE__*/、/*__DICT__*/ 等占位符
 ├─ build.mjs                 # 读 locales/*.json + template → 生成产物
 ├─ tools/
 │  ├─ import-upstream.mjs    # 拉上游词典 → 转换/清洗 → 合并进 locales/zh-CN.json
@@ -211,7 +220,7 @@ github-i18n/
 │  ├─ matcher.test.mjs       # 归一化/精确/模板匹配
 │  ├─ classify.test.mjs      # 剪枝与标识符启发式（含反例）
 │  └─ reltime.test.mjs       # 相对时间格式化
-├─ docs/specs/2026-09-21-github-i18n-design.md
+├─ docs/specs/2026-09-21-github-cn-design.md
 └─ GitHub汉化插件.user.js     # 构建产物（提交，供直装）
 ```
 
@@ -219,7 +228,7 @@ github-i18n/
 
 `build.mjs`（零依赖，Node 内置 `fs`）：
 1. 读 `locales/zh-CN.json`、`patterns.json`、`css-rules.json`。
-2. 读 `src/userscript.template.js`，替换 `/*__DICT__*/`、`/*__PATTERNS__*/`、`/*__CSS__*/`、`/*__VERSION__*/`。
+2. 读 `src/userscript.template.js` 与 `src/engine.mjs`（去掉 `export ` 前缀后内联），替换 `/*__ENGINE__*/`、`/*__DICT__*/`、`/*__PATTERNS__*/`、`/*__CSS__*/`、`/*__VERSION__*/`、`/*__VERSION_JSON__*/`。
 3. 写 `GitHub汉化插件.user.js`（LF 换行，UTF-8）。
 4. 打印统计：dict 条数、patterns 条数、css 条数、产物大小。
 5. `--check` 模式：只校验，不写文件（供测试用）。
@@ -230,7 +239,7 @@ github-i18n/
 
 ```
 // @name         GitHub汉化插件
-// @namespace    https://github.com/jiebukai/github-i18n/
+// @namespace    https://github.com/jiebukai/github-cn/
 // @version      <由 build 注入>
 // @description  GitHub 界面汉化（简体中文）：导航/按钮/菜单/属性文本，正文按需机器翻译
 // @author       jiebukai
@@ -249,10 +258,10 @@ github-i18n/
 // @connect      translate.googleapis.com
 // @connect      gitcn.org
 // @run-at       document-idle
-// @supportURL   https://github.com/jiebukai/github-i18n/issues
-// @homepageURL  https://github.com/jiebukai/github-i18n
-// @downloadURL  https://raw.githubusercontent.com/jiebukai/github-i18n/main/GitHub%E6%B1%89%E5%8C%96%E6%8F%92%E4%BB%B6.user.js
-// @updateURL    https://raw.githubusercontent.com/jiebukai/github-i18n/main/GitHub%E6%B1%89%E5%8C%96%E6%8F%92%E4%BB%B6.user.js
+// @supportURL   https://github.com/jiebukai/github-cn/issues
+// @homepageURL  https://github.com/jiebukai/github-cn
+// @downloadURL  https://raw.githubusercontent.com/jiebukai/github-cn/main/GitHub%E6%B1%89%E5%8C%96%E6%8F%92%E4%BB%B6.user.js
+// @updateURL    https://raw.githubusercontent.com/jiebukai/github-cn/main/GitHub%E6%B1%89%E5%8C%96%E6%8F%92%E4%BB%B6.user.js
 ```
 
 命名纪律（沿用你现有仓库的约定）：**文件名 = `@name`**，`.user.js` 后缀必须保留（Tampermonkey 安装检测依赖 URL pathname 以 `.user.js` 结尾）。
@@ -260,7 +269,7 @@ github-i18n/
 ## 11. 测试策略
 
 1. **语法**：`node --check GitHub汉化插件.user.js`。
-2. **单元测试**（`node --test tests/`，零第三方依赖）：
+2. **单元测试**（`npm test` → `node --test`，零第三方依赖；Node 24 不接受 `--test <目录>` 形式，用自动发现）：
    - `matcher`：归一化（NBSP/多空白/大小写）、精确命中、模板匹配、未命中返回原文。
    - `classify`：**反例优先** —— 保证 `owner/repo`、`feature-x`、`v1.3.1`、`src/index.js`、`jiebukai`、`MAX_RETRIES`、URL、邮箱、纯数字、长正文（>200 字符）都不被翻译；同时保证 `Pull requests`、`Issues`、`Merge pull request` 等被翻译。
    - `reltime`：若干固定时间差 → 期望中文（「3 个月前」）。
@@ -297,9 +306,9 @@ github-i18n/
 | M5 | 正文翻译按钮 | 两个服务可用、可切换、可显示原文、命中缓存 |
 | M6 | 发布 | 推送 GitHub，README 含安装链接，用 GitHub API 复核远端内容 |
 
-## 14. 待用户审阅时可调整项
+## 14. 已定项 / 可调整项
 
-- `@name` 与文件名：当前定 `GitHub汉化插件` / `GitHub汉化插件.user.js`（无空格，保证「文件名 = @name」完全一致）。若你想保留空格（`GitHub 汉化插件`）请说明。
+- `@name` 与文件名：**已定** `GitHub汉化插件` / `GitHub汉化插件.user.js`（无空格，保证「文件名 = @name」完全一致）；**仓库名定为 `github-cn`**。
 - 正文翻译默认服务：当前默认 `google`。
 - 远程词典兜底：默认 `true`（仅在内嵌未命中时才请求 CDN）。
 - 长度阈值（200 字符）与词数阈值（5 词）：当前为初值，手测后可调。
