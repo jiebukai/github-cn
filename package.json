@@ -1,6 +1,6 @@
 {
   "name": "github-cn",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
   "description": "GitHub 界面汉化（简体中文）Tampermonkey 用户脚本",

@@ -58,7 +58,9 @@
   const CFG_KEY = 'gh-i18n:cfg';
   const CACHE_KEY = 'gh-i18n:cache';
   const CACHE_LIMIT = 3000;
-  const ATTRS = ['aria-label', 'title', 'placeholder', 'data-confirm'];
+  // data-content 是 GitHub 在 SPA/Turbo 恢复时用来回填元素文本的属性，必须一起翻译，
+  // 否则恢复后已译文会被覆盖回英文（仓库页标签行丢汉化就是这个原因）。
+  const ATTRS = ['aria-label', 'title', 'placeholder', 'data-confirm', 'data-content'];
   const MAX_TEXT_LEN = 200; // 超过该长度的单文本节点视为正文，不翻译
   const MAX_WORDS = 5; // 词典未命中时，超过该词数不猜
   const BATCH_NODES = 300; // 单次空闲回调处理的根节点上限
@@ -405,7 +407,12 @@
   /* ---------------- SPA 路由切换 ---------------- */
   let lastHref = location.href;
   function watchRoute() {
-    const onNav = () => { lastHref = ''; };
+    const onNav = (e) => {
+      lastHref = location.href;
+      // 导航/恢复后立刻重扫一次（Turbo 会用 data-content 回填，故重扫必须够快）
+      if (cfg.enabled) window.setTimeout(fullTranslate, 50);
+      if (e && e.type === 'popstate' && cfg.enabled) window.setTimeout(fullTranslate, 300);
+    };
     try {
       document.addEventListener('turbo:load', onNav, true);
       document.addEventListener('pjax:end', onNav, true);
@@ -907,6 +914,72 @@
   }
 
   /* ======================================================================
+   * 诊断工具（手测用）：
+   *   window.__ghI18n.diagnose('Pull requests')  查看某文本为何被/未被翻译
+   *   window.__ghI18n.collect()                  列出「像 UI 名称但词典未命中」的英文
+   * ==================================================================== */
+  function diagnose(text) {
+    const needle = String(text == null ? '' : text).trim();
+    const zh = dict[normKey(needle)];
+    const result = { query: needle, 期望译文: zh || null, found: false, nodes: 0, ancestors: [], nodeValue: null, nodeTranslated: null, thisTextNextTranslation: null };
+    if (!needle || !document.body) return result;
+    const walker = document.createTreeWalker(document.body, 4, null);
+    let n = walker.nextNode();
+    while (n) {
+      const v = (n.nodeValue || '').trim();
+      if (v === needle || (zh && v === zh)) {
+        result.nodes += 1;
+        if (!result.found) {
+          result.found = true;
+          result.nodeValue = n.nodeValue;
+          result.nodeTranslated = !!(zh && v === zh);
+          result.skipReason = skipReason(v, { maxLen: MAX_TEXT_LEN });
+          result.lookupResult = lookup(v);
+          result.thisTextNextTranslation = lookup(needle);
+          let el = n.parentElement;
+          while (el && el !== document.documentElement) {
+            const cls = typeof el.className === 'string' ? el.className : '';
+            result.ancestors.push({ tag: el.tagName, id: el.id || '', cls: cls.slice(0, 140), skipped: shouldSkipElement(el) });
+            el = el.parentElement;
+          }
+        }
+      }
+      n = walker.nextNode();
+    }
+    console.log('[gh-i18n] diagnose 结果：', JSON.stringify(result, null, 2));
+    return result;
+  }
+
+  function collect(limit) {
+    const max = limit || 300;
+    const found = new Map();
+    if (!document.body) return [];
+    const walker = document.createTreeWalker(document.body, 4, {
+      acceptNode(node) {
+        const p = node.parentElement;
+        if (!p || shouldSkipElement(p)) return 2;
+        return 1;
+      },
+    });
+    let n = walker.nextNode();
+    while (n && found.size < max) {
+      const raw = n.nodeValue;
+      if (raw) {
+        const body = splitEdges(raw).body;
+        if (body && body.length <= 60 && /^[A-Za-z]/.test(body) && !/[\u4e00-\u9fff]/.test(body)
+          && !/[.!?:]$/.test(body) && wordCount(body) <= 6
+          && skipReason(body, { maxLen: MAX_TEXT_LEN }) === null && lookup(body) == null) {
+          found.set(body, (found.get(body) || 0) + 1);
+        }
+      }
+      n = walker.nextNode();
+    }
+    const arr = [...found.keys()].sort();
+    console.log('[gh-i18n] 词典未命中的候选 UI 文本 ' + arr.length + ' 条（可整段复制给维护者补词条）：\n' + arr.join('\n'));
+    return arr;
+  }
+
+  /* ======================================================================
    * 初始化
    * ==================================================================== */
   function init() {
@@ -926,6 +999,8 @@
 
     // 调试/测试入口
     window.__ghI18n = {
+      diagnose,
+      collect,
       version: VERSION,
       dict,
       patterns,

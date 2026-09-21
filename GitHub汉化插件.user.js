@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         GitHub汉化插件
 // @namespace    https://github.com/jiebukai/github-cn/
-// @version      1.0.0
+// @version      1.0.1
 // @description  GitHub 界面汉化（简体中文）：导航/按钮/菜单/属性文本，正文按需机器翻译
 // @author       jiebukai
 // @license      MIT
@@ -223,6 +223,7 @@ function formatRelativeTime(date, now, locale) {
     "abandoned": "废弃",
     "able to merge.": "可以合并。",
     "about": "简介",
+    "access": "访问权限",
     "access commit status": "访问提交状态",
     "access deployment status": "访问部署状态",
     "access notifications": "访问通知",
@@ -356,6 +357,8 @@ function formatRelativeTime(date, now, locale) {
     "authenticator app": "身份验证器应用",
     "author": "作者",
     "authorized": "权限",
+    "authorized oauth apps": "已授权的 OAuth 应用",
+    "auto": "自动",
     "autogenerate table of contents for markdown files in this repository. the table of contents will be displayed near the top of the file.": "自动生成此仓库中 Markdown 文件的目录。目录将显示在文件顶部附近。",
     "automated kanban": "自动化看板",
     "automated kanban with reviews": "带审查的自动看板",
@@ -364,6 +367,7 @@ function formatRelativeTime(date, now, locale) {
     "awaiting review from you": "等待您审查",
     "awaiting review from you or your team": "等待您或您的团队的审查",
     "awaiting review from you specifically": "特别等待您审查",
+    "back": "返回",
     "back to github": "返回到 GitHub",
     "back to notifications": "回到通知",
     "backup email address": "备用电子邮箱",
@@ -383,6 +387,7 @@ function formatRelativeTime(date, now, locale) {
     "billable time": "计费时间",
     "billing": "帐单",
     "billing & plans": "计费 & 计划",
+    "billing and licensing": "账单与许可",
     "billing and plans": "账单与套餐",
     "bio": "个人简介",
     "block command line pushes that expose my email": "阻止在命令行推送中暴露我的电子邮箱",
@@ -451,6 +456,7 @@ function formatRelativeTime(date, now, locale) {
     "choose an existing tag, or create a new tag on publish": "选择一个现有的标签，或在发布时创建一个新标签",
     "choose different branches or forks above to discuss and review changes.": "在上方选择其他分支或复刻以讨论和查看更改。",
     "choose how github looks to you. select a single theme, or sync with your system and automatically switch between day and night themes.": "选择 GitHub 在您眼中的样子。选择单一主题，或与您的系统同步并自动在白天和夜晚的主题之间切换。",
+    "choose how github looks to you. select a single theme, or sync with your system and automatically switch between day and night themes. selections are applied immediately and saved automatically.": "选择 GitHub 的显示外观。可以选定单一主题，或与你的系统同步、在日间与夜间主题之间自动切换。选择会立即应用并自动保存。",
     "choose the default branch for your new personal repositories. you might want to change the default name due to different workflows, or because your integrations still require “master” as the default branch name. you can always change the default branch name on individual repositories.": "为您新的个人仓库选择默认的分支。由于工作流程的不同，或者由于您的集成仍然需要 “master ”作为默认分支名，您可能想改变默认名称。您可以随时改变个人仓库的默认分支名称。",
     "choose two branches to see what’s changed or to start a new pull request. if you need to, you can also": "选择两个分支以比较差异或启动新的拉取请求。如果需要，您也可以",
     "choose which files not to track from a list of templates.": "从模板列表中选择哪些文件不需要跟踪。",
@@ -464,6 +470,7 @@ function formatRelativeTime(date, now, locale) {
     "clone with git or checkout with svn using the repository’s web address.": "通过仓库 web 地址进行 Git 克隆或 SVN 检出。",
     "clone with https": "通过 HTTPS 方式克隆",
     "clone with ssh": "通过 SSH 方式克隆",
+    "close": "关闭",
     "close issue": "关闭议题",
     "close pull request": "关闭拉取请求",
     "close with comment": "评论并关闭议题",
@@ -479,10 +486,12 @@ function formatRelativeTime(date, now, locale) {
     "code options": "代码选项",
     "code scanning": "代码扫描",
     "code scanning alerts": "代码扫描警报",
+    "code, planning, and automation": "代码、规划与自动化",
     "codespaces": "代码空间",
     "collaborator": "合作者",
     "collaborators have access to this repository. only you can contribute to this repository.": "个协作者有权访问此仓库。 只有您可以对此仓库做出贡献。",
     "collections": "集合",
+    "colorblind": "色觉障碍",
     "combine all commits from the head branch into a single commit in the base branch.": "将来自头部分支的所有提交合并到基础分支中的单个提交中。",
     "comment": "评论",
     "comment on this commit": "评论",
@@ -523,6 +532,7 @@ function formatRelativeTime(date, now, locale) {
     "conflicting files": "冲突的文件:",
     "contact github": "联系 GitHub",
     "continue": "继续",
+    "contrast": "对比度",
     "contribute": "贡献",
     "contributing guidelines": "贡献指南",
     "contribution activity": "贡献动态",
@@ -534,7 +544,9 @@ function formatRelativeTime(date, now, locale) {
     "convert this pull request to draft?": "将此拉取请求转换为草案？",
     "convert to draft": "设置为草案",
     "coordinate, track, and update your work in one place, so projects stay transparent and on schedule.": "在这里协调、跟踪和更新您的工作，使项目保持透明和按计划进行。",
+    "copied": "已复制",
     "copied!": "已复制！",
+    "copy": "复制",
     "copy line": "复制行",
     "copy lines": "复制行",
     "copy link": "复制链接",
@@ -575,6 +587,7 @@ function formatRelativeTime(date, now, locale) {
     "create status badge": "创建状态徽章",
     "created": "已创建",
     "created on the dates": "创建于何时",
+    "credentials": "凭据",
     "custom": "自定义",
     "custom domain": "自定义域",
     "custom domains allow you to serve your site from a domain other than": "自定义域允许您从其他域为您的站点提供服务，而不是",
@@ -582,8 +595,11 @@ function formatRelativeTime(date, now, locale) {
     "customize": "自定义",
     "customize your pins": "自定义您的置顶项目",
     "danger zone": "危险区",
+    "dark default": "深色（默认）",
     "dark dimmed": "昏暗",
     "dark high contrast": "高对比暗",
+    "dark mode": "深色模式",
+    "dark theme": "深色主题",
     "dashboard": "仪表盘",
     "date": "日期",
     "date range:": "时间范围",
@@ -630,6 +646,7 @@ function formatRelativeTime(date, now, locale) {
     "description": "描述",
     "designated below": "下面指定的",
     "details": "细节",
+    "deuteranopia": "绿色盲",
     "developer settings": "开发者设置",
     "developers": "开发者",
     "device:": "设备：",
@@ -687,6 +704,7 @@ function formatRelativeTime(date, now, locale) {
     "emoji skin tone preference": "表情符号肤色偏好",
     "enable": "启用",
     "enable dependabot alerts": "启用 Dependabot 警报",
+    "enable high contrast for light or dark mode (or both) based on your system settings": "根据你的系统设置，为浅色或深色模式（或两者）启用高对比度",
     "enable workflow": "启用工作流程",
     "enabled": "启用",
     "enforce https": "强制执行 HTTPS",
@@ -697,6 +715,7 @@ function formatRelativeTime(date, now, locale) {
     "enter recovery code": "输入恢复码",
     "enter your email": "输入您的邮箱地址",
     "enterprise": "企业",
+    "enterprises": "企业",
     "environments": "环境",
     "event": "事件",
     "event trigger.": "事件触发器。",
@@ -896,6 +915,7 @@ function formatRelativeTime(date, now, locale) {
     "including a number": "包括数字",
     "including forks.": "包括复刻",
     "incorrect username or password.": "用户名或密码不正确。",
+    "increase contrast": "提高对比度",
     "indent mode": "缩进模式",
     "indent size": "缩进大小",
     "initialize this repository with:": "使用以下方式初始化此仓库：",
@@ -973,12 +993,16 @@ function formatRelativeTime(date, now, locale) {
     "let’s begin the adventure": "让我们开始探险吧",
     "license": "许可证",
     "license:": "许可证:",
+    "light default": "浅色（默认）",
+    "light mode": "浅色模式",
+    "light theme": "浅色主题",
     "line wrap mode": "换行模式",
     "linked issues": "关联议题",
     "linked pull requests": "关联拉取请求",
     "linked repositories": "关联仓库",
     "linked repositories:": "关联仓库",
     "lists": "列表",
+    "loading": "加载中",
     "loading activity...": "加载动态中...",
     "loading preview…": "载入预览…",
     "loading tag information…": "载入标签信息…",
@@ -1030,6 +1054,7 @@ function formatRelativeTime(date, now, locale) {
     "minutes ago": "分钟前",
     "mirrors": "镜像",
     "moderate severity": "中风险",
+    "moderation": "审核",
     "moderation settings": "审查设置",
     "modified": "修改",
     "monday": "星期一",
@@ -1087,6 +1112,7 @@ function formatRelativeTime(date, now, locale) {
     "no projects have been opened yet.": "目前没有被打开的项目。",
     "no recovery tokens": "未设置恢复令牌",
     "no releases published": "无发行版",
+    "no results": "无结果",
     "no results matched your search.": "没有与您的搜索相符的结果。",
     "no reviews": "未经审查",
     "no saved replies yet.": "暂时没有快捷回复。",
@@ -1113,10 +1139,12 @@ function formatRelativeTime(date, now, locale) {
     "october": "10月",
     "of this file size": "文件大小",
     "of this size": "仓库大小",
+    "off": "关",
     "okay, you have successfully deleted that key.": "好的，您已成功删除该密钥。",
     "old password": "旧密码",
     "older": "旧的",
     "oldest": "最早",
+    "on": "开",
     "once unarchived, the following can be modified and commented on:": "一旦解除存档，就可以对以下内容进行修改和评论：",
     "once you delete a repository, there is no going back. please be certain.": "您一旦删除仓库，将再也无法恢复。请确认。",
     "once you delete your account, there is no going back. please be certain.": "您一旦删除了您的帐户，将再也无法恢复。请确认！",
@@ -1209,6 +1237,7 @@ function formatRelativeTime(date, now, locale) {
     "projects": "项目",
     "propose change": "提出更改",
     "propose changes": "提出更改",
+    "protanopia": "红色盲",
     "providing a fallback sms number will allow github to send your two-factor authentication codes to an alternate device if you lose your primary device.": "如果您丢失主要设备，提供备用手机号码将允许 GitHub 将您的双因素身份验证码发送到备用设备。",
     "public": "公开",
     "public archive": "公共存档",
@@ -1239,6 +1268,7 @@ function formatRelativeTime(date, now, locale) {
     "read and write security events": "读写安全事件",
     "read and write team discussions": "读写团队讨论",
     "read enterprise profile data": "读取企业个人数据",
+    "read more": "阅读更多",
     "read more about oauth scopes.": "了解更多关于 OAuth 作用域的信息。",
     "read org and team membership, read org projects": "读取组织和团队成员，读取组织项目",
     "read public user gpg keys": "读取公共用户 GPG 密钥",
@@ -1303,6 +1333,7 @@ function formatRelativeTime(date, now, locale) {
     "request changes": "请求更改",
     "resend email with link": "重新发送带有链接的邮件",
     "resend verification email": "重新发送验证邮件",
+    "reset": "重置",
     "resolve conflicts": "解决冲突",
     "resolve conversation": "解决对话",
     "resolved": "已解决",
@@ -1357,6 +1388,7 @@ function formatRelativeTime(date, now, locale) {
     "security & analysis": "安全 & 分析",
     "security advisories": "安全公告",
     "security alerts": "安全警报",
+    "security and quality": "安全与质量",
     "security features will be unavailable:": "安全功能将无法使用：",
     "security features will become available:": "安全功能将不可用：",
     "security keys": "安全密钥",
@@ -1410,6 +1442,7 @@ function formatRelativeTime(date, now, locale) {
     "show changes since your last review": "显示自您上次评论以来的更改",
     "show comments": "显示评论",
     "show full screen (shift+f)": "全屏显示（Shift+F）",
+    "show less": "收起",
     "show more": "展示更多",
     "show more activity": "加载更多动态",
     "show resolved": "显示已解决",
@@ -1480,6 +1513,7 @@ function formatRelativeTime(date, now, locale) {
     "still in progress?": "仍在进行中吗？",
     "stop ignoring": "取消忽略",
     "styling with markdown is supported": "支持使用 Markdown 样式",
+    "submit": "提交",
     "submit feedback approving these changes.": "批准，并提出反馈意见。",
     "submit feedback suggesting changes.": "请求更改，并提出更改意见。",
     "submit general feedback without explicit approval.": "未批准，并提出一般性反馈意见。",
@@ -1614,6 +1648,7 @@ function formatRelativeTime(date, now, locale) {
     "trending settings": "趋势设置",
     "triage and prioritize bugs with columns for to do, high priority, low priority, and closed.": "使用待办事项、高优先级、低优先级和已关闭的栏目对错误进行分类和优先级排序。",
     "triggered via issues": "通过议题触发",
+    "tritanopia": "蓝色盲",
     "try a different file.": "请尝试不同的文件。",
     "try again": "请重试，",
     "try again.": "请重试。",
@@ -1663,6 +1698,7 @@ function formatRelativeTime(date, now, locale) {
     "updating": "更新中",
     "updating any repository settings": "更新仓库设置",
     "upgrade": "升级",
+    "upload": "上传",
     "upload an image to customize your repository’s social media preview.": "上传图像以自定义仓库的社交媒体预览。",
     "upload files": "上传文件",
     "upload packages to github package registry": "将包上传到 GitHub 包注册",
@@ -1678,6 +1714,7 @@ function formatRelativeTime(date, now, locale) {
     "username may only contain alphanumeric characters or single hyphens, and cannot begin or end with a hyphen.": "用户名只能包含字母数字字符或单个连字符，并且不能以连字符开头或结尾。",
     "username or email address": "用户名或电子邮箱",
     "username or organization name": "用户名或组织名称",
+    "users": "用户",
     "users options": "用户选项",
     "verified": "已验证",
     "verified signature": "已验证签名",
@@ -1689,6 +1726,7 @@ function formatRelativeTime(date, now, locale) {
     "verifying…": "验证中…",
     "view": "查看",
     "view advanced search syntax": "查看高级搜索语法",
+    "view all": "查看全部",
     "view all branches": "查看所有分支",
     "view all repositories": "查看所有仓库",
     "view all sessions": "查看所有会话",
@@ -1900,7 +1938,7 @@ function formatRelativeTime(date, now, locale) {
     "replacement": "你创建的拉取请求"
   }
 ];
-  const VERSION = "1.0.0";
+  const VERSION = "1.0.1";
 
   /* ======================================================================
    * 常量与配置
@@ -1908,7 +1946,9 @@ function formatRelativeTime(date, now, locale) {
   const CFG_KEY = 'gh-i18n:cfg';
   const CACHE_KEY = 'gh-i18n:cache';
   const CACHE_LIMIT = 3000;
-  const ATTRS = ['aria-label', 'title', 'placeholder', 'data-confirm'];
+  // data-content 是 GitHub 在 SPA/Turbo 恢复时用来回填元素文本的属性，必须一起翻译，
+  // 否则恢复后已译文会被覆盖回英文（仓库页标签行丢汉化就是这个原因）。
+  const ATTRS = ['aria-label', 'title', 'placeholder', 'data-confirm', 'data-content'];
   const MAX_TEXT_LEN = 200; // 超过该长度的单文本节点视为正文，不翻译
   const MAX_WORDS = 5; // 词典未命中时，超过该词数不猜
   const BATCH_NODES = 300; // 单次空闲回调处理的根节点上限
@@ -2255,7 +2295,12 @@ function formatRelativeTime(date, now, locale) {
   /* ---------------- SPA 路由切换 ---------------- */
   let lastHref = location.href;
   function watchRoute() {
-    const onNav = () => { lastHref = ''; };
+    const onNav = (e) => {
+      lastHref = location.href;
+      // 导航/恢复后立刻重扫一次（Turbo 会用 data-content 回填，故重扫必须够快）
+      if (cfg.enabled) window.setTimeout(fullTranslate, 50);
+      if (e && e.type === 'popstate' && cfg.enabled) window.setTimeout(fullTranslate, 300);
+    };
     try {
       document.addEventListener('turbo:load', onNav, true);
       document.addEventListener('pjax:end', onNav, true);
@@ -2757,6 +2802,72 @@ function formatRelativeTime(date, now, locale) {
   }
 
   /* ======================================================================
+   * 诊断工具（手测用）：
+   *   window.__ghI18n.diagnose('Pull requests')  查看某文本为何被/未被翻译
+   *   window.__ghI18n.collect()                  列出「像 UI 名称但词典未命中」的英文
+   * ==================================================================== */
+  function diagnose(text) {
+    const needle = String(text == null ? '' : text).trim();
+    const zh = dict[normKey(needle)];
+    const result = { query: needle, 期望译文: zh || null, found: false, nodes: 0, ancestors: [], nodeValue: null, nodeTranslated: null, thisTextNextTranslation: null };
+    if (!needle || !document.body) return result;
+    const walker = document.createTreeWalker(document.body, 4, null);
+    let n = walker.nextNode();
+    while (n) {
+      const v = (n.nodeValue || '').trim();
+      if (v === needle || (zh && v === zh)) {
+        result.nodes += 1;
+        if (!result.found) {
+          result.found = true;
+          result.nodeValue = n.nodeValue;
+          result.nodeTranslated = !!(zh && v === zh);
+          result.skipReason = skipReason(v, { maxLen: MAX_TEXT_LEN });
+          result.lookupResult = lookup(v);
+          result.thisTextNextTranslation = lookup(needle);
+          let el = n.parentElement;
+          while (el && el !== document.documentElement) {
+            const cls = typeof el.className === 'string' ? el.className : '';
+            result.ancestors.push({ tag: el.tagName, id: el.id || '', cls: cls.slice(0, 140), skipped: shouldSkipElement(el) });
+            el = el.parentElement;
+          }
+        }
+      }
+      n = walker.nextNode();
+    }
+    console.log('[gh-i18n] diagnose 结果：', JSON.stringify(result, null, 2));
+    return result;
+  }
+
+  function collect(limit) {
+    const max = limit || 300;
+    const found = new Map();
+    if (!document.body) return [];
+    const walker = document.createTreeWalker(document.body, 4, {
+      acceptNode(node) {
+        const p = node.parentElement;
+        if (!p || shouldSkipElement(p)) return 2;
+        return 1;
+      },
+    });
+    let n = walker.nextNode();
+    while (n && found.size < max) {
+      const raw = n.nodeValue;
+      if (raw) {
+        const body = splitEdges(raw).body;
+        if (body && body.length <= 60 && /^[A-Za-z]/.test(body) && !/[\u4e00-\u9fff]/.test(body)
+          && !/[.!?:]$/.test(body) && wordCount(body) <= 6
+          && skipReason(body, { maxLen: MAX_TEXT_LEN }) === null && lookup(body) == null) {
+          found.set(body, (found.get(body) || 0) + 1);
+        }
+      }
+      n = walker.nextNode();
+    }
+    const arr = [...found.keys()].sort();
+    console.log('[gh-i18n] 词典未命中的候选 UI 文本 ' + arr.length + ' 条（可整段复制给维护者补词条）：\n' + arr.join('\n'));
+    return arr;
+  }
+
+  /* ======================================================================
    * 初始化
    * ==================================================================== */
   function init() {
@@ -2776,6 +2887,8 @@ function formatRelativeTime(date, now, locale) {
 
     // 调试/测试入口
     window.__ghI18n = {
+      diagnose,
+      collect,
       version: VERSION,
       dict,
       patterns,
