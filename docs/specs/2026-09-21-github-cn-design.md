@@ -215,7 +215,9 @@ github-cn/
 ├─ build.mjs                 # 读 locales/*.json + template → 生成产物
 ├─ tools/
 │  ├─ import-upstream.mjs    # 拉上游词典 → 转换/清洗 → 合并进 locales/zh-CN.json
-│  └─ dict-lint.mjs          # 词典体检
+│  ├─ dict-lint.mjs          # 词典体检
+│  └─ audit-coverage.py      # 覆盖率审计：抓 SSR HTML 离线跑同一份规则，量化命中率并列漏翻候选
+│                            #   （规则直接从 src/userscript.template.js 解析，避免与实现漂移）
 ├─ tests/
 │  ├─ matcher.test.mjs       # 归一化/精确/模板匹配
 │  ├─ classify.test.mjs      # 剪枝与标识符启发式（含反例）
@@ -275,7 +277,10 @@ github-cn/
    - `reltime`：若干固定时间差 → 期望中文（「3 个月前」）。
 3. **词典 lint**（`tools/dict-lint.mjs`）：重复键、空值、值里出现英文单词残留（如 `=> "拉取 requests"`）、`dict` 与 `patterns` 冲突、`css` 选择器语法。
 4. **构建一致性**：`build.mjs --check` 后比对产物与工作区文件一致（防忘记构建）。
-5. **手测清单（由用户执行，我无法驱动浏览器）**：
+5. **覆盖率审计**（`python tools/audit-coverage.py`）：抓公开页面的 SSR HTML，用与脚本**同一份**
+   剪枝/词典规则离线跑一遍，输出「命中词典比例」「被剪枝元素统计」「未命中候选清单」；
+   HTML 缓存在系统临时目录，重复审计不重复请求（匿名抓取有 429 限流）。
+6. **手测清单（由用户执行，我无法驱动浏览器）**：
    - 首页/仪表盘：顶部导航、`+` 下拉菜单、通知面板、用户菜单、搜索框 placeholder。
    - 仓库页：Code/Issues/Pull requests/Actions 标签、About 侧栏、Watch/Fork/Star 按钮与其下拉。
    - 动态：hover 出现 tooltip、点击下拉/弹窗、SPA 内跳转后新增内容。

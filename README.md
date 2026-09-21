@@ -59,6 +59,10 @@ npm run build        # 生成 GitHub汉化插件.user.js
 npm run check        # 只校验，不写文件（比对产物是否已最新）
 npm run lint:dict    # 词典体检
 npm test             # node --test tests/
+
+# 覆盖率审计（Python 3，标准库）：抓公开页面 HTML，用与脚本同一份规则离线跑一遍，
+# 输出命中率、被剪枝元素统计与「该翻但词典没有」的候选清单
+python tools/audit-coverage.py
 ```
 
 - 词典源在 `locales/`，脚本模板在 `src/userscript.template.js`，二者由 `build.mjs` 内联成单文件产物。
