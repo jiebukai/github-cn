@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         GitHub汉化插件
 // @namespace    https://github.com/jiebukai/github-cn/
-// @version      1.0.2
+// @version      1.0.3
 // @description  GitHub 界面汉化（简体中文）：导航/按钮/菜单/属性文本，正文按需机器翻译
 // @author       jiebukai
 // @license      MIT
@@ -363,6 +363,7 @@ function formatRelativeTime(date, now, locale) {
     "authentication code": "验证码",
     "authenticator app": "身份验证器应用",
     "author": "作者",
+    "authored": "撰写",
     "authorized": "权限",
     "authorized oauth apps": "已授权的 OAuth 应用",
     "auto": "自动",
@@ -416,6 +417,7 @@ function formatRelativeTime(date, now, locale) {
     "branches": "分支",
     "branches, tags, commit ranges, and time ranges. in the same repository and across forks.": "分支、标签、提交范围和时间范围。 在同一个仓库中并跨分支。",
     "browse files": "浏览文件",
+    "browse repository at this point": "浏览该时间点的仓库",
     "browse the repository at this point in the history": "在历史记录中的浏览仓库",
     "browse your starred repositories and topics": "浏览我的标星仓库和话题",
     "bug triage": "BUG 分类",
@@ -525,6 +527,7 @@ function formatRelativeTime(date, now, locale) {
     "commits pushed to github using this email will still be associated with your account.": "使用此电子邮箱推送到 GitHub 的提交仍将与您的帐户相关联。",
     "commits pushed with a private email will no longer be blocked.": "使用私人电子邮箱推送的提交将不再被阻止。",
     "commits pushed with a private email will now be blocked and you will see a warning.": "使用私人电子邮箱推送的提交将被阻止，您会看到一个警告。",
+    "committed": "提交",
     "committed to this repository in the past day": "过去一天致力于此仓库",
     "committed to this repository in the past week": "过去一周致力于此仓库",
     "common ssh problems": "常见的 SSH 问题",
@@ -1108,6 +1111,7 @@ function formatRelativeTime(date, now, locale) {
     "merging can be performed automatically.": "可以自动进行合并。",
     "merging is blocked": "合并被阻止",
     "merging…": "合并中…",
+    "metadata": "元数据",
     "milestone": "里程碑",
     "milestones": "里程碑",
     "minutes ago": "分钟前",
@@ -1164,6 +1168,7 @@ function formatRelativeTime(date, now, locale) {
     "no definitions found in this file.": "本文件中没有发现任何定义。",
     "no expiration": "无有效期",
     "no fallback sms number": "未设置备用手机号码",
+    "no labels": "无标签",
     "no new commits to fetch. enjoy your day!": "尚无新提交。祝您愉快！",
     "no new commits yet. enjoy your day!": "尚无新提交。祝您愉快！",
     "no one assigned": "未分配",
@@ -2034,7 +2039,7 @@ function formatRelativeTime(date, now, locale) {
     "replacement": "你创建的拉取请求"
   }
 ];
-  const VERSION = "1.0.2";
+  const VERSION = "1.0.3";
 
   /* ======================================================================
    * 常量与配置
