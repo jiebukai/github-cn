@@ -211,7 +211,13 @@
   const processedText = new WeakSet();
   const processedTime = new WeakSet();
   const processedCss = new WeakSet();
-  const stats = { text: 0, attr: 0, time: 0, skipped: 0 };
+  const stats = { text: 0, attr: 0, time: 0, skipped: 0, refixed: 0 };
+
+  // 已翻译节点 → 我写入的值。用于对抗「翻译后被页面脚本改回英文」：
+  // React hydration 或 Turbo 恢复可能一次性重写文本，MutationObserver 有时来不及/不触发，
+  // 由这个表在巡检时修回。
+  const translatedNodes = new Map();
+  const MAX_REFIX = 3; // 同一节点反复被改回时的纠错上限，避免与页面脚本无休止拉锯
 
   function translateTextNode(node) {
     if (!node || processedText.has(node)) return;
@@ -225,6 +231,7 @@
     const next = parts.lead + hit + parts.trail;
     if (next !== raw) {
       node.nodeValue = next;
+      translatedNodes.set(node, { text: next, fixes: 0 });
       stats.text += 1;
     }
   }
@@ -402,6 +409,34 @@
     if (!cfg.enabled || !document.body) return;
     translateSubtree(document.body);
     applyCssRules(document);
+  }
+
+  /**
+   * 巡检：把被页面脚本改回英文的已译文本修回来；顺便清理已离开文档的节点。
+   * @returns {{fixed:number, tracked:number}}
+   */
+  function verifyTranslated(limit) {
+    const max = limit || 200;
+    let fixed = 0;
+    const stale = [];
+    translatedNodes.forEach((rec, node) => {
+      if (!node.isConnected) { stale.push(node); return; }
+      if (node.nodeValue === rec.text) return;
+      if (rec.fixes >= MAX_REFIX) { stale.push(node); return; }
+      const parts = splitEdges(node.nodeValue);
+      const hit = parts.body ? lookup(parts.body) : null;
+      if (!hit) { stale.push(node); return; }
+      if (fixed >= max) return;
+      const next = parts.lead + hit + parts.trail;
+      node.nodeValue = next;
+      rec.text = next;
+      rec.fixes += 1;
+      stats.refixed += 1;
+      fixed += 1;
+    });
+    for (let i = 0; i < stale.length; i += 1) translatedNodes.delete(stale[i]);
+    if (fixed) warn('巡检修回', fixed, '处');
+    return { fixed, tracked: translatedNodes.size };
   }
 
   /* ---------------- SPA 路由切换 ---------------- */
@@ -921,7 +956,9 @@
   function diagnose(text) {
     const needle = String(text == null ? '' : text).trim();
     const zh = dict[normKey(needle)];
-    const result = { query: needle, 期望译文: zh || null, found: false, nodes: 0, ancestors: [], nodeValue: null, nodeTranslated: null, thisTextNextTranslation: null };
+    const result = { query: needle, version: VERSION, 期望译文: zh || null, found: false, nodes: 0,
+      ancestors: [], nodeValue: null, nodeTranslated: null, thisTextNextTranslation: null,
+      跟踪表大小: translatedNodes.size, tracked: null };
     if (!needle || !document.body) return result;
     const walker = document.createTreeWalker(document.body, 4, null);
     let n = walker.nextNode();
@@ -936,6 +973,8 @@
           result.skipReason = skipReason(v, { maxLen: MAX_TEXT_LEN });
           result.lookupResult = lookup(v);
           result.thisTextNextTranslation = lookup(needle);
+          const rec = translatedNodes.get(n);
+          result.tracked = rec ? { expected: rec.text, fixes: rec.fixes } : null;
           let el = n.parentElement;
           while (el && el !== document.documentElement) {
             const cls = typeof el.className === 'string' ? el.className : '';
@@ -995,12 +1034,18 @@
     window.setInterval(() => {
       if (cfg.enabled && cfg.bodyButton) injectBodyButtons();
     }, 2500);
+    // 抗覆盖巡检：页面脚本把已译文本改回英文时修回来
+    window.setInterval(() => {
+      if (!cfg.enabled || !document.body) return;
+      idle(() => { try { verifyTranslated(200); } catch (e) { warn(e); } });
+    }, 2000);
     gm.menu('GitHub汉化插件：打开设置', () => openPanel());
 
     // 调试/测试入口
     window.__ghI18n = {
       diagnose,
       collect,
+      verifyTranslated,
       version: VERSION,
       dict,
       patterns,

@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  verify:
+    name: 测试 / 词典体检 / 产物一致性
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 单元测试
+        run: node --test
+
+      - name: 词典体检
+        run: node tools/dict-lint.mjs
+
+      - name: 产物与源一致（防止忘记 build）
+        run: node build.mjs --check
