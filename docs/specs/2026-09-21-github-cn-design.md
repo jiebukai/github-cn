@@ -216,12 +216,14 @@ github-cn/
 ├─ tools/
 │  ├─ import-upstream.mjs    # 拉上游词典 → 转换/清洗 → 合并进 locales/zh-CN.json
 │  ├─ dict-lint.mjs          # 词典体检
-│  └─ audit-coverage.py      # 覆盖率审计：抓 SSR HTML 离线跑同一份规则，量化命中率并列漏翻候选
-│                            #   （规则直接从 src/userscript.template.js 解析，避免与实现漂移）
+│  ├─ audit-coverage.py      # 覆盖率审计：抓 SSR HTML 离线跑同一份规则，量化命中率并列漏翻候选
+│  │                          #   （规则直接从 src/userscript.template.js 解析，避免与实现漂移）
+│  └─ ci-status.py           # 经 SOCKS5 查 Actions 运行结果（推送后自查 CI）
 ├─ tests/
 │  ├─ matcher.test.mjs       # 归一化/精确/模板匹配
 │  ├─ classify.test.mjs      # 剪枝与标识符启发式（含反例）
-│  └─ reltime.test.mjs       # 相对时间格式化
+│  ├─ reltime.test.mjs       # 相对时间格式化
+│  └─ runtime.test.mjs       # 运行时冒烟：自研 DOM stub + node:vm 真跑构建产物
 ├─ docs/specs/2026-09-21-github-cn-design.md
 └─ GitHub汉化插件.user.js     # 构建产物（提交，供直装）
 ```
@@ -275,6 +277,10 @@ github-cn/
    - `matcher`：归一化（NBSP/多空白/大小写）、精确命中、模板匹配、未命中返回原文。
    - `classify`：**反例优先** —— 保证 `owner/repo`、`feature-x`、`v1.3.1`、`src/index.js`、`jiebukai`、`MAX_RETRIES`、URL、邮箱、纯数字、长正文（>200 字符）都不被翻译；同时保证 `Pull requests`、`Issues`、`Merge pull request` 等被翻译。
    - `reltime`：若干固定时间差 → 期望中文（「3 个月前」）。
+   - `runtime`：自研最小 DOM stub（`createTreeWalker` 尊重 `FILTER_REJECT`、classList/attributes/
+     dataset/relative-time/closest）+ `node:vm` 执行**构建产物**，断言 init 不抛错、
+     `window.__ghI18n` 就位、导航标签与属性被翻译、剪枝生效、巡检与诊断接口可调用。
+     这是「脚本在真实 DOM 上会不会一上来就崩」唯一的自动化验证手段。
 3. **词典 lint**（`tools/dict-lint.mjs`）：重复键、空值、值里出现英文单词残留（如 `=> "拉取 requests"`）、`dict` 与 `patterns` 冲突、`css` 选择器语法。
 4. **构建一致性**：`build.mjs --check` 后比对产物与工作区文件一致（防忘记构建）。
 5. **覆盖率审计**（`python tools/audit-coverage.py`）：抓公开页面的 SSR HTML，用与脚本**同一份**
