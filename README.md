@@ -72,16 +72,20 @@ python tools/audit-coverage.py
 
 **某处还是英文怎么办？**
 
-1. 确认装的是本脚本、且是最新版：Tampermonkey 面板 →「检查更新」；页面控制台 `__ghI18n.version` 可查当前版本。
+1. **先确认脚本真的注入了**：Tampermonkey 面板 → 脚本列表 → 看「GitHub汉化插件」是否存在、是否启用、版本号（也点「检查更新」）。
+   页面控制台里跑下面这行：**返回版本号**说明在跑；**返回 `undefined` 或报 `ReferenceError`** 说明脚本没注入到本页。
+   ```js
+   window.__ghI18n && window.__ghI18n.version
+   ```
 2. 如果同时装了 k1995 的上游插件，请**停用其一** —— 两个脚本会互相覆盖，不易判断谁在起作用。
-3. 在页面控制台跑（`copy()` 会把结果放进剪贴板）：
+3. 确认脚本在跑之后，再跑（`copy()` 会把结果放进剪贴板）：
 
    ```js
    // 列出本页「像 UI 名称、是英文、但词典未命中」的清单
-   copy(__ghI18n.collect().join('\n'))
+   copy(window.__ghI18n.collect().join('\n'))
 
    // 报告某条文本为什么没被翻译（被剪枝 / 词典未命中 / 已被 SPA 覆盖）
-   copy(JSON.stringify(__ghI18n.diagnose('Pull requests'), null, 2))
+   copy(JSON.stringify(window.__ghI18n.diagnose('Pull requests'), null, 2))
    ```
 
 4. 把输出提到 [issue](https://github.com/jiebukai/github-cn/issues)，或直接补 `locales/zh-CN.json` 发 PR。
