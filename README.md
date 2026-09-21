@@ -31,7 +31,7 @@
 | 设置 | 默认 | 说明 |
 |---|---|---|
 | 启用汉化 | 开 | 总开关，关闭后不翻译任何内容 |
-| 翻译属性文本 | 开 | `aria-label` / `title` / `placeholder` / `data-confirm` |
+| 翻译属性文本 | 开 | `aria-label` / `title` / `placeholder` / `data-confirm` / `data-content` |
 | 相对时间中文化 | 开 | `<relative-time>` 显示为「3 个月前」 |
 | 远程词典兜底 | 开 | 内嵌词典未命中时才请求 CDN 上的上游词典 |
 | 正文「译」按钮 | 开 | 是否在描述 / README / 搜索结果旁注入按钮 |
@@ -67,6 +67,32 @@ python tools/audit-coverage.py
 
 - 词典源在 `locales/`，脚本模板在 `src/userscript.template.js`，二者由 `build.mjs` 内联成单文件产物。
 - `tools/import-upstream.mjs` 用于从上游拉取词条并转换合并（不复制上游代码）。
+
+## 常见问题
+
+**某处还是英文怎么办？**
+
+1. 确认装的是本脚本、且是最新版：Tampermonkey 面板 →「检查更新」；页面控制台 `__ghI18n.version` 可查当前版本。
+2. 如果同时装了 k1995 的上游插件，请**停用其一** —— 两个脚本会互相覆盖，不易判断谁在起作用。
+3. 在页面控制台跑（`copy()` 会把结果放进剪贴板）：
+
+   ```js
+   // 列出本页「像 UI 名称、是英文、但词典未命中」的清单
+   copy(__ghI18n.collect().join('\n'))
+
+   // 报告某条文本为什么没被翻译（被剪枝 / 词典未命中 / 已被 SPA 覆盖）
+   copy(JSON.stringify(__ghI18n.diagnose('Pull requests'), null, 2))
+   ```
+
+4. 把输出提到 [issue](https://github.com/jiebukai/github-cn/issues)，或直接补 `locales/zh-CN.json` 发 PR。
+
+**为什么代码块、仓库名、用户名、分支名不翻译？**
+
+刻意的：脚本用保守剪枝 + 标识符启发式（含 `-` `_` `.` `/` 的、camelCase/PascalCase、`MAX_RETRIES` 这类常量、URL、邮箱、纯数字/日期一律跳过），避免改坏用户内容。README 正文属长文本，只在点「译」时才机器翻译。
+
+**正文的「译」按钮走哪个服务？**
+
+默认 Google 翻译（`translate.googleapis.com`），可在设置面板切成 gitcn.org。请求由 `GM_xmlhttpRequest` 发出，**只在你点击时**触发；结果缓存在本地（键 `gh-i18n:cache`），设置面板可清空。
 
 ## 来源与许可
 

@@ -1,0 +1,4 @@
+# 统一换行符为 LF。
+# 原因：build.mjs 生成的产物要与源字节级一致（node build.mjs --check / CI 都在校验），
+# 而 Windows 上 core.autocrlf=true 会把工作区文件变 CRLF，导致校验误报失败。
+* text=auto eol=lf
